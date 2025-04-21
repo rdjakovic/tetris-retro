@@ -1,10 +1,23 @@
-import React from 'react';
+import React from "react";
 
-const GameOverlay = ({ isPaused, gameOver, score, onRestartGame }) => {
+const GameOverlay = ({
+  isPaused,
+  gameOver,
+  score,
+  onRestartGame,
+  onTogglePause,
+}) => {
   return (
     <>
-      {isPaused && !gameOver && <div className="paused-overlay">Paused</div>}
-      
+      {isPaused && !gameOver && (
+        <div className="paused-overlay">
+          <div className="pause-content">
+            <div>Paused</div>
+            <button onClick={onTogglePause}>Resume</button>
+          </div>
+        </div>
+      )}
+
       {gameOver && (
         <div className="game-over-message">
           Game Over!

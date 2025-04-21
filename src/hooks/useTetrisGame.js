@@ -319,6 +319,15 @@ const useTetrisGame = () => {
   // Effect for keyboard controls
   useEffect(() => {
     const handleKeyDown = (event) => {
+      // Handle pause toggle separately to allow unpausing with P key
+      if (event.keyCode === 80 && gameStarted && !gameOver) {
+        // 'P' key
+        handleTogglePause();
+        event.preventDefault();
+        return;
+      }
+
+      // Skip other controls if game is not active
       if (!gameStarted || isPaused || gameOver) return;
 
       let pieceMoved = false;
@@ -342,10 +351,6 @@ const useTetrisGame = () => {
           break;
         case 32: // Spacebar
           hardDrop();
-          pieceMoved = true;
-          break;
-        case 80: // 'P' key
-          handleTogglePause();
           pieceMoved = true;
           break;
         default:

@@ -164,8 +164,36 @@ canvas#tetris-board {
   justify-content: center;
   align-items: center;
   z-index: 5;
-  pointer-events: none;
+  pointer-events: auto; /* Changed from none to allow button clicks */
   border-radius: 10px; /* Match game-area */
+}
+
+.pause-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background-color: rgba(31, 64, 104, 0.6);
+  padding: 30px;
+  border-radius: 10px;
+  border: 3px solid #f0a500;
+}
+
+.paused-overlay button {
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.5em;
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: #f0a500;
+  color: #162447;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px #000;
+  transition: background-color 0.2s ease;
+}
+
+.paused-overlay button:hover {
+  background-color: #ffc53d;
 }
 
 .game-over-message {

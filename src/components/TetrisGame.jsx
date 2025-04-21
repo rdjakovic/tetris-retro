@@ -53,6 +53,7 @@ const TetrisGame = () => {
           gameOver={gameOver}
           score={score}
           onRestartGame={handleRestartGame}
+          onTogglePause={handleTogglePause}
         />
       </div>
 
