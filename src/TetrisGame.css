@@ -1,0 +1,205 @@
+/* TetrisGame.css - Copied and slightly adjusted from the original HTML */
+body {
+  /* Apply base styles if needed, or scope more directly */
+  /* background-color: #1a1a2e; /* Consider applying this to your App's main container */
+  color: #e0e0e0;
+  font-family: "Press Start 2P", cursive;
+  margin: 0;
+  padding: 20px; /* Add some padding around the game */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  flex-direction: column;
+}
+
+.tetris-container {
+  display: flex;
+  flex-direction: column; /* Stack title and game */
+  align-items: center;
+}
+
+.tetris-container h1 {
+  color: #f0a500;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px #000;
+}
+
+.game-area {
+  /* Renamed from game-container for clarity */
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  border: 4px solid #4a4a6a;
+  padding: 20px;
+  background-color: #162447;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative; /* Needed for absolute positioning of overlays */
+}
+
+canvas#tetris-board {
+  /* Keep IDs for specificity if needed, or use classes */
+  border: 3px solid #f0a500;
+  background-color: #0f193a;
+  display: block;
+  border-radius: 5px;
+}
+
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  min-width: 150px;
+  padding: 15px;
+  background-color: #1f4068;
+  border-radius: 8px;
+  border: 2px solid #4a4a6a;
+}
+
+.info-item {
+  font-size: 1em;
+  width: 100%;
+  text-align: center;
+  color: #e0e0e0; /* Ensure label color */
+}
+
+.info-item span {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.2em;
+  color: #ffffff;
+}
+
+.info-item-next-piece-canvas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+#next-piece-canvas {
+  /* Keep IDs for specificity if needed, or use classes */
+  border: 2px solid #f0a500;
+  background-color: #0f193a;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.game-controls {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.game-controls button {
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.7em;
+  padding: 10px 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px #000;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  width: 100%;
+}
+
+.game-controls button:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px #000;
+}
+
+.game-controls button:disabled {
+  background-color: #9e9e9e !important; /* Use !important to override base styles if needed */
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  color: #555; /* Darker text for disabled */
+}
+
+.start-button {
+  /* Use classes for buttons */
+  background-color: #4caf50;
+  color: white;
+}
+.start-button:hover:not(:disabled) {
+  background-color: #66bb6a;
+}
+
+.pause-resume-button {
+  /* Use classes for buttons */
+  background-color: #ff9800;
+  color: white;
+}
+.pause-resume-button:hover:not(:disabled) {
+  background-color: #ffb74d;
+}
+
+.controls-info {
+  margin-top: 20px;
+  font-size: 0.8em;
+  color: #aaa;
+}
+
+.controls-info p {
+  margin: 5px 0;
+}
+
+.paused-overlay {
+  /* Use class */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 2em;
+  display: flex; /* Controlled by React conditional rendering */
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: 10px; /* Match game-area */
+}
+
+.game-over-message {
+  /* Use class */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ff4d4d;
+  padding: 30px;
+  border-radius: 10px;
+  font-size: 1.5em;
+  text-align: center;
+  z-index: 10;
+  /* display: none; /* Controlled by React conditional rendering */
+  border: 3px solid #ff4d4d;
+}
+
+.game-over-message button {
+  /* Style button inside game over */
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.8em;
+  padding: 10px 15px;
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: #f0a500;
+  color: #162447;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px #000;
+  transition: background-color 0.2s ease;
+}
+
+.game-over-message button:hover {
+  background-color: #ffc53d;
+}
