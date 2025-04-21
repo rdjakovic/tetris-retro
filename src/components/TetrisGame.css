@@ -92,8 +92,9 @@ canvas#tetris-board {
 .game-controls {
   margin-top: 15px;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
 }
 
@@ -230,4 +231,19 @@ canvas#tetris-board {
 
 .game-over-message button:hover {
   background-color: #ffc53d;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 600px;
+  min-width: 150px;
+}
+
+.info-section {
+  flex-grow: 1;
+}
+
+.controls-section {
 }

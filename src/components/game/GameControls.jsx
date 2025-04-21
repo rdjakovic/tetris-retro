@@ -16,7 +16,7 @@ const GameControls = ({
         </button>
       )}
 
-      {gameStarted && !gameOver && !isPaused && (
+      {gameStarted && !gameOver && (
         <button className="pause-resume-button" onClick={onTogglePause}>
           {isPaused ? "Resume" : "Pause"}
         </button>

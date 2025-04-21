@@ -31,21 +31,24 @@ const TetrisGame = () => {
         <GameBoard board={board} currentPiece={currentPiece} />
 
         <div className="side-panel">
-          <InfoPanel
-            score={score}
-            level={level}
-            linesCleared={linesCleared}
-            nextPiece={nextPiece}
-          />
-
-          <GameControls
-            gameStarted={gameStarted}
-            gameOver={gameOver}
-            isPaused={isPaused}
-            onStartGame={handleStartGame}
-            onTogglePause={handleTogglePause}
-            onRestartGame={handleRestartGame}
-          />
+          <div className="info-section">
+            <InfoPanel
+              score={score}
+              level={level}
+              linesCleared={linesCleared}
+              nextPiece={nextPiece}
+            />
+          </div>
+          <div className="controls-section">
+            <GameControls
+              gameStarted={gameStarted}
+              gameOver={gameOver}
+              isPaused={isPaused}
+              onStartGame={handleStartGame}
+              onTogglePause={handleTogglePause}
+              onRestartGame={handleRestartGame}
+            />
+          </div>
         </div>
 
         <GameOverlay
