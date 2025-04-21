@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
-const GameControls = ({ 
-  gameStarted, 
-  gameOver, 
-  isPaused, 
-  onStartGame, 
-  onTogglePause, 
-  onRestartGame 
+const GameControls = ({
+  gameStarted,
+  gameOver,
+  isPaused,
+  onStartGame,
+  onTogglePause,
+  onRestartGame,
 }) => {
   return (
     <div className="game-controls">
@@ -15,16 +15,13 @@ const GameControls = ({
           Start Game
         </button>
       )}
-      
-      {gameStarted && !gameOver && (
-        <button
-          className="pause-resume-button"
-          onClick={onTogglePause}
-        >
+
+      {gameStarted && !gameOver && !isPaused && (
+        <button className="pause-resume-button" onClick={onTogglePause}>
           {isPaused ? "Resume" : "Pause"}
         </button>
       )}
-      
+
       {gameOver && (
         <button className="restart-button" onClick={onRestartGame}>
           Restart Game
