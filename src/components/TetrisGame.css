@@ -53,6 +53,7 @@ canvas#tetris-board {
   align-items: center;
   gap: 15px;
   min-width: 150px;
+  max-width: 200px;
   padding: 15px;
   background-color: #1f4068;
   border-radius: 8px;
@@ -71,6 +72,34 @@ canvas#tetris-board {
   margin-top: 10px;
   font-size: 1.2em;
   color: #ffffff;
+}
+
+.info-item label {
+  display: block;
+  margin-bottom: 5px;
+  color: #e0e0e0;
+}
+
+.info-item input {
+  width: 95%;
+  padding: 5px;
+  background-color: #0f193a;
+  border: 2px solid #f0a500;
+  border-radius: 5px;
+  color: #ffffff;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.8em;
+  text-align: center;
+  outline: none;
+}
+
+.info-item input:focus {
+  border-color: #ffc53d;
+}
+
+.info-item input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .info-item-next-piece-canvas {

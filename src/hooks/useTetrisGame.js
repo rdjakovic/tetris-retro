@@ -23,6 +23,7 @@ const useTetrisGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [playerName, setPlayerName] = useState("Player1");
 
   // Refs for game loop
   const gameLoopId = useRef(null);
@@ -389,6 +390,8 @@ const useTetrisGame = () => {
     gameOver,
     isPaused,
     gameStarted,
+    playerName,
+    setPlayerName,
 
     // Game actions
     movePiece,

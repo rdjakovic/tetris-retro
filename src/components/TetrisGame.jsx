@@ -18,6 +18,8 @@ const TetrisGame = () => {
     gameOver,
     isPaused,
     gameStarted,
+    playerName,
+    setPlayerName,
     handleTogglePause,
     handleStartGame,
     handleRestartGame,
@@ -37,6 +39,8 @@ const TetrisGame = () => {
               level={level}
               linesCleared={linesCleared}
               nextPiece={nextPiece}
+              playerName={playerName}
+              onPlayerNameChange={setPlayerName}
             />
           </div>
           <div className="controls-section">
