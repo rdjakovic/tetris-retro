@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./TetrisGame.css";
 import useTetrisGame from "../hooks/useTetrisGame";
 import GameBoard from "./game/GameBoard";
 import InfoPanel from "./game/InfoPanel";
 import GameControls from "./game/GameControls";
 import GameOverlay from "./game/GameOverlay";
+import HighScoresOverlay from "./game/HighScoresOverlay";
 import ControlsInfo from "./game/ControlsInfo";
 
 const TetrisGame = () => {
@@ -24,6 +25,14 @@ const TetrisGame = () => {
     handleStartGame,
     handleRestartGame,
   } = useTetrisGame();
+
+  // State for high scores overlay
+  const [showHighScores, setShowHighScores] = useState(false);
+
+  // Toggle high scores overlay
+  const handleToggleHighScores = () => {
+    setShowHighScores((prev) => !prev);
+  };
 
   return (
     <div className="tetris-container">
@@ -51,6 +60,7 @@ const TetrisGame = () => {
               onStartGame={handleStartGame}
               onTogglePause={handleTogglePause}
               onRestartGame={handleRestartGame}
+              onShowHighScores={handleToggleHighScores}
             />
           </div>
         </div>
@@ -61,6 +71,11 @@ const TetrisGame = () => {
           score={score}
           onRestartGame={handleRestartGame}
           onTogglePause={handleTogglePause}
+        />
+
+        <HighScoresOverlay
+          isVisible={showHighScores}
+          onClose={handleToggleHighScores}
         />
       </div>
 

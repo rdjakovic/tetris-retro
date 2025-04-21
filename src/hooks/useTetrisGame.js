@@ -11,6 +11,7 @@ import {
   calculateDropInterval,
   rotatePieceMatrix,
 } from "../utils/tetrisUtils";
+import { saveHighScore, isHighScore } from "../utils/highScoresUtils";
 
 const useTetrisGame = () => {
   // Game state
@@ -140,13 +141,28 @@ const useTetrisGame = () => {
       ) {
         setGameOver(true);
         setGameStarted(false);
+
+        // Save high score if applicable
+        if (score > 0 && isHighScore(score)) {
+          saveHighScore(playerName, score);
+        }
+
         if (gameLoopId.current) {
           cancelAnimationFrame(gameLoopId.current);
           gameLoopId.current = null;
         }
       }
     }
-  }, [currentPiece, nextPiece, board, level, isPaused, gameOver]);
+  }, [
+    currentPiece,
+    nextPiece,
+    board,
+    level,
+    isPaused,
+    gameOver,
+    score,
+    playerName,
+  ]);
 
   // Hard drop - drop the piece all the way down
   const hardDrop = useCallback(() => {
@@ -207,6 +223,12 @@ const useTetrisGame = () => {
     ) {
       setGameOver(true);
       setGameStarted(false);
+
+      // Save high score if applicable
+      if (score > 0 && isHighScore(score)) {
+        saveHighScore(playerName, score);
+      }
+
       if (gameLoopId.current) {
         cancelAnimationFrame(gameLoopId.current);
         gameLoopId.current = null;
@@ -222,6 +244,8 @@ const useTetrisGame = () => {
     level,
     isPaused,
     gameOver,
+    score,
+    playerName,
     setBoard,
     setCurrentPiece,
     setNextPiece,

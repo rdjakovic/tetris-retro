@@ -121,9 +121,18 @@ canvas#tetris-board {
 .game-controls {
   margin-top: 15px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.main-controls,
+.secondary-controls {
+  display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
 }
 
@@ -168,6 +177,24 @@ canvas#tetris-board {
 }
 .pause-resume-button:hover:not(:disabled) {
   background-color: #ffb74d;
+}
+
+.restart-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.restart-button:hover:not(:disabled) {
+  background-color: #ff6659;
+}
+
+.high-scores-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.high-scores-button:hover:not(:disabled) {
+  background-color: #42a5f5;
 }
 
 .controls-info {
@@ -228,13 +255,14 @@ canvas#tetris-board {
 
 .game-over-message {
   /* Use class */
+  width: 60%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.8);
   color: #ff4d4d;
-  padding: 30px;
+  padding: 30px 10px;
   border-radius: 10px;
   font-size: 1.5em;
   text-align: center;
@@ -270,8 +298,107 @@ canvas#tetris-board {
   min-width: 150px;
 }
 
-.info-section {
+/* High Scores Overlay */
+.high-scores-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  border-radius: 10px;
 }
+
+.high-scores-content {
+  background-color: rgba(31, 64, 104, 0.9);
+  padding: 30px;
+  border-radius: 10px;
+  border: 3px solid #f0a500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+}
+
+.high-scores-content h2 {
+  color: #f0a500;
+  margin: 0 0 20px 0;
+  text-shadow: 2px 2px #000;
+}
+
+.high-scores-table-container {
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.high-scores-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  font-size: 0.8em;
+}
+
+.high-scores-table th,
+.high-scores-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #4a4a6a;
+}
+
+.high-scores-table th {
+  background-color: #0f193a;
+  color: #f0a500;
+}
+
+.high-scores-table tr:nth-child(even) {
+  background-color: rgba(15, 25, 58, 0.3);
+}
+
+.high-scores-table tr:hover {
+  background-color: rgba(240, 165, 0, 0.2);
+}
+
+.high-scores-table .top-score {
+  background-color: rgba(240, 165, 0, 0.3);
+  font-weight: bold;
+}
+
+.no-scores-message {
+  font-style: italic;
+  color: #aaa;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.high-scores-content .close-button {
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.8em;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #f0a500;
+  color: #162447;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px #000;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+}
+
+.high-scores-content .close-button:hover {
+  background-color: #ffc53d;
+}
+
+/* Info section styles are inherited from parent */
 
 .controls-section {
   display: flex;
