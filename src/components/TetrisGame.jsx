@@ -71,6 +71,7 @@ const TetrisGame = () => {
           score={score}
           onRestartGame={handleRestartGame}
           onTogglePause={handleTogglePause}
+          onShowHighScores={handleToggleHighScores}
         />
 
         <HighScoresOverlay

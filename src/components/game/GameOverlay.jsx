@@ -6,6 +6,7 @@ const GameOverlay = ({
   score,
   onRestartGame,
   onTogglePause,
+  onShowHighScores,
 }) => {
   return (
     <>
@@ -22,7 +23,12 @@ const GameOverlay = ({
         <div className="game-over-message">
           Game Over!
           <div id="final-score">Score: {score}</div>
-          <button onClick={onRestartGame}>Restart</button>
+          <div className="game-over-buttons">
+            <button onClick={onRestartGame}>Restart</button>
+            <button className="high-scores-button" onClick={onShowHighScores}>
+              High Scores
+            </button>
+          </div>
         </div>
       )}
     </>
