@@ -1,8 +1,5 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { 
-  COLS, 
-  ROWS 
-} from '../constants/tetrisConstants';
+import { useState, useRef, useCallback, useEffect } from "react";
+import { COLS, ROWS } from "../constants/tetrisConstants";
 import {
   createEmptyBoard,
   createRandomPiece,
@@ -12,8 +9,8 @@ import {
   calculateScore,
   calculateLevel,
   calculateDropInterval,
-  rotatePieceMatrix
-} from '../utils/tetrisUtils';
+  rotatePieceMatrix,
+} from "../utils/tetrisUtils";
 
 const useTetrisGame = () => {
   // Game state
@@ -34,49 +31,52 @@ const useTetrisGame = () => {
   const dropIntervalRef = useRef(1000);
 
   // Move the current piece horizontally
-  const movePiece = useCallback((direction) => {
-    if (!currentPiece || isPaused || gameOver) return;
+  const movePiece = useCallback(
+    (direction) => {
+      if (!currentPiece || isPaused || gameOver) return;
 
-    const newX = currentPiece.x + direction;
-    if (!checkCollision(newX, currentPiece.y, currentPiece.shape, board)) {
-      setCurrentPiece(prev => ({
-        ...prev,
-        x: newX
-      }));
-    }
-  }, [currentPiece, board, isPaused, gameOver]);
+      const newX = currentPiece.x + direction;
+      if (!checkCollision(newX, currentPiece.y, currentPiece.shape, board)) {
+        setCurrentPiece((prev) => ({
+          ...prev,
+          x: newX,
+        }));
+      }
+    },
+    [currentPiece, board, isPaused, gameOver]
+  );
 
   // Rotate the current piece
   const rotatePiece = useCallback(() => {
     if (!currentPiece || isPaused || gameOver) return;
 
     const rotatedShape = rotatePieceMatrix(currentPiece);
-    
+
     // Try rotation, if it causes collision, try wall kicks
     let newX = currentPiece.x;
-    
+
     // Check if rotation is possible at current position
     if (!checkCollision(newX, currentPiece.y, rotatedShape, board)) {
-      setCurrentPiece(prev => ({
+      setCurrentPiece((prev) => ({
         ...prev,
-        shape: rotatedShape
+        shape: rotatedShape,
       }));
       return;
     }
-    
+
     // Try wall kicks (move left/right to make rotation possible)
     const kicks = [-1, 1, -2, 2]; // Try these offsets
     for (const kick of kicks) {
       if (!checkCollision(newX + kick, currentPiece.y, rotatedShape, board)) {
-        setCurrentPiece(prev => ({
+        setCurrentPiece((prev) => ({
           ...prev,
           x: prev.x + kick,
-          shape: rotatedShape
+          shape: rotatedShape,
         }));
         return;
       }
     }
-    
+
     // If all wall kicks fail, don't rotate
   }, [currentPiece, board, isPaused, gameOver]);
 
@@ -85,50 +85,58 @@ const useTetrisGame = () => {
     if (!currentPiece || isPaused || gameOver) return;
 
     const newY = currentPiece.y + 1;
-    
+
     if (!checkCollision(currentPiece.x, newY, currentPiece.shape, board)) {
       // No collision, move down
-      setCurrentPiece(prev => ({
+      setCurrentPiece((prev) => ({
         ...prev,
-        y: newY
+        y: newY,
       }));
     } else {
       // Collision detected, lock the piece and spawn a new one
       // Merge current piece to board
       const newBoard = mergePieceToBoard(currentPiece, board);
       setBoard(newBoard);
-      
+
       // Clear completed lines
-      const { newBoard: boardAfterClear, linesCleared: newLinesCleared } = clearLines(newBoard);
-      
+      const { newBoard: boardAfterClear, linesCleared: newLinesCleared } =
+        clearLines(newBoard);
+
       if (newLinesCleared > 0) {
         // Update board after clearing lines
         setBoard(boardAfterClear);
-        
+
         // Update score
-        setScore(prev => prev + calculateScore(newLinesCleared, level));
-        
+        setScore((prev) => prev + calculateScore(newLinesCleared, level));
+
         // Update lines cleared
-        setLinesCleared(prev => {
+        setLinesCleared((prev) => {
           const newTotal = prev + newLinesCleared;
           const newLevel = calculateLevel(newTotal);
-          
+
           // Update level if needed
           if (newLevel > level) {
             setLevel(newLevel);
             dropIntervalRef.current = calculateDropInterval(newLevel);
           }
-          
+
           return newTotal;
         });
       }
-      
+
       // Spawn next piece
       setCurrentPiece(nextPiece);
       setNextPiece(createRandomPiece());
-      
+
       // Check for game over
-      if (checkCollision(nextPiece.x, nextPiece.y, nextPiece.shape, boardAfterClear)) {
+      if (
+        checkCollision(
+          nextPiece.x,
+          nextPiece.y,
+          nextPiece.shape,
+          boardAfterClear
+        )
+      ) {
         setGameOver(true);
         setGameStarted(false);
         if (gameLoopId.current) {
@@ -142,53 +150,119 @@ const useTetrisGame = () => {
   // Hard drop - drop the piece all the way down
   const hardDrop = useCallback(() => {
     if (!currentPiece || isPaused || gameOver) return;
-    
+
     let newY = currentPiece.y;
-    
+
     // Find the lowest position without collision
-    while (!checkCollision(currentPiece.x, newY + 1, currentPiece.shape, board)) {
+    while (
+      !checkCollision(currentPiece.x, newY + 1, currentPiece.shape, board)
+    ) {
       newY++;
     }
-    
-    // Update position and trigger piece lock
-    setCurrentPiece(prev => ({
-      ...prev,
-      y: newY
-    }));
-    
-    // Force immediate lock by calling dropPiece after state update
-    setTimeout(dropPiece, 0);
-  }, [currentPiece, board, dropPiece, isPaused, gameOver]);
+
+    // Create a new piece at the bottom position
+    const pieceAtBottom = {
+      ...currentPiece,
+      y: newY,
+    };
+
+    // Directly merge the piece to the board at the bottom position
+    const newBoard = mergePieceToBoard(pieceAtBottom, board);
+    setBoard(newBoard);
+
+    // Clear completed lines
+    const { newBoard: boardAfterClear, linesCleared: newLinesCleared } =
+      clearLines(newBoard);
+
+    if (newLinesCleared > 0) {
+      // Update board after clearing lines
+      setBoard(boardAfterClear);
+
+      // Update score
+      setScore((prev) => prev + calculateScore(newLinesCleared, level));
+
+      // Update lines cleared
+      setLinesCleared((prev) => {
+        const newTotal = prev + newLinesCleared;
+        const newLevel = calculateLevel(newTotal);
+
+        // Update level if needed
+        if (newLevel > level) {
+          setLevel(newLevel);
+          dropIntervalRef.current = calculateDropInterval(newLevel);
+        }
+
+        return newTotal;
+      });
+    }
+
+    // Spawn next piece
+    setCurrentPiece(nextPiece);
+    setNextPiece(createRandomPiece());
+
+    // Check for game over
+    if (
+      checkCollision(nextPiece.x, nextPiece.y, nextPiece.shape, boardAfterClear)
+    ) {
+      setGameOver(true);
+      setGameStarted(false);
+      if (gameLoopId.current) {
+        cancelAnimationFrame(gameLoopId.current);
+        gameLoopId.current = null;
+      }
+    }
+
+    // Reset drop counter to prevent immediate drop after hard drop
+    dropCounter.current = 0;
+  }, [
+    currentPiece,
+    nextPiece,
+    board,
+    level,
+    isPaused,
+    gameOver,
+    setBoard,
+    setCurrentPiece,
+    setNextPiece,
+    setScore,
+    setLinesCleared,
+    setLevel,
+    setGameOver,
+    setGameStarted,
+  ]);
 
   // Game loop
-  const gameLoop = useCallback((time) => {
-    if (isPaused || gameOver || !gameStarted) {
-      return;
-    }
-    
-    const deltaTime = time - lastTimeRef.current;
-    lastTimeRef.current = time;
-    
-    dropCounter.current += deltaTime;
-    
-    if (dropCounter.current > dropIntervalRef.current) {
-      dropPiece();
-      dropCounter.current = 0;
-    }
-    
-    gameLoopId.current = requestAnimationFrame(gameLoop);
-  }, [isPaused, gameOver, gameStarted, dropPiece]);
+  const gameLoop = useCallback(
+    (time) => {
+      if (isPaused || gameOver || !gameStarted) {
+        return;
+      }
+
+      const deltaTime = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+
+      dropCounter.current += deltaTime;
+
+      if (dropCounter.current > dropIntervalRef.current) {
+        dropPiece();
+        dropCounter.current = 0;
+      }
+
+      gameLoopId.current = requestAnimationFrame(gameLoop);
+    },
+    [isPaused, gameOver, gameStarted, dropPiece]
+  );
 
   // Toggle pause state
   const handleTogglePause = useCallback(() => {
     if (!gameStarted || gameOver) return;
-    setIsPaused(prev => !prev);
+    setIsPaused((prev) => !prev);
   }, [gameStarted, gameOver]);
 
   // Start a new game
   const handleStartGame = useCallback(() => {
     if (gameOver || gameStarted) return;
-    
+
     setBoard(createEmptyBoard());
     const firstPiece = createRandomPiece();
     setCurrentPiece(firstPiece);
@@ -233,7 +307,7 @@ const useTetrisGame = () => {
         gameLoopId.current = null;
       }
     }
-    
+
     return () => {
       if (gameLoopId.current) {
         cancelAnimationFrame(gameLoopId.current);
@@ -246,9 +320,9 @@ const useTetrisGame = () => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (!gameStarted || isPaused || gameOver) return;
-      
+
       let pieceMoved = false;
-      
+
       switch (event.keyCode) {
         case 37: // Left Arrow
           movePiece(-1);
@@ -277,16 +351,16 @@ const useTetrisGame = () => {
         default:
           break;
       }
-      
+
       if (pieceMoved) {
         event.preventDefault();
       }
     };
-    
-    document.addEventListener('keydown', handleKeyDown);
-    
+
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [
     gameStarted,
@@ -296,7 +370,7 @@ const useTetrisGame = () => {
     dropPiece,
     rotatePiece,
     hardDrop,
-    handleTogglePause
+    handleTogglePause,
   ]);
 
   return {
@@ -310,7 +384,7 @@ const useTetrisGame = () => {
     gameOver,
     isPaused,
     gameStarted,
-    
+
     // Game actions
     movePiece,
     dropPiece,
@@ -318,7 +392,7 @@ const useTetrisGame = () => {
     hardDrop,
     handleTogglePause,
     handleStartGame,
-    handleRestartGame
+    handleRestartGame,
   };
 };
 
